@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections</title>
+     <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+       <nav class="navbar">
+    <div class="logo">Nostra</div>
+
+    <!-- Hamburger Icon -->
+    <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Nav Links -->
+    <ul class="nav-links" id="nav-links">
+        <p><a href="index.html">Home</a></p>
+        <p><a href="#">New Arrival</a></p>
+        <p><a href="#">Most Wanted</a></p>
+        <p><a href="collections.html">Collections</a></p>
+        <p><a href="contact.html">Contact Us</a></p>
+    </ul>
+</nav>
+ <div class="container">
+    <aside class="filters">
+      <h2>Occasion</h2>
+      <label><input type="checkbox"> Summer</label>
+      <label><input type="checkbox"> Party</label>
+      <label><input type="checkbox"> Floral</label>
+
+      <h2>Colors</h2>
+      <label><input type="checkbox"> Red</label>
+      <label><input type="checkbox"> Blue</label>
+      <label><input type="checkbox"> Green</label>
+      <label><input type="checkbox"> White</label>
+
+      <h2>Arrivals</h2>
+      <label><input type="checkbox"> New</label>
+      <label><input type="checkbox"> Old</label>
+    </aside>
+
+    <main class="main-content">
+      <div class="search-bar">
+        <input type="text" placeholder="Search">
+        <button>🔍</button>
+      </div>
+
+      <div class="product-grid">
+        <!-- Repeat for each product -->
+        <div class="card">
+          <img src="./f4.jpg" alt="Floral Summer Shirt">
+          <p>Floral Summer Shirt<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f6.jpg" alt="Summer Green Shirt">
+          <p>Summer Green Shirt<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f3.jpg" alt="Floral Party Shirt">
+          <p>Floral Party Shirt<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f2.jpg" alt="Floral Summer Shirt">
+          <p>Floral Summer Shirt<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f8.jpg" alt="Beach Shirt">
+          <p>Beach Shirt<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f10.jpg" alt="Shirt Party Red">
+          <p>Shirt Party Red<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f11.jpg" alt="Party Floral Shirt">
+          <p>Party Floral Shirt<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f1.jpg" alt="Floral Summer Shirt">
+          <p>Floral Summer Shirt<br><strong>$220</strong></p>
+        </div>
+        <div class="card">
+          <img src="./f4.jpg" alt="Shirt Party Red">
+          <p>Shirt Party Red<br><strong>$220</strong></p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+   <div class="newsletter">
+    <h2>Join our News Letter</h2>
+    <p>Signup for our Email Newspaper to get exclusive discounts,updates and more</p>
+ <div class="form-group">
+    <input type="email">
+    <button>Subscribe <i class="fa-solid fa-arrow-right" style="color: white;"></i> </button>
+ </div> 
+</div>
+
+  <section class="footer">
+        <h1 class="title">Nostra</h1>
+        <p class="para1">The standard chunk of Lorem ipsum used since the 1500s is reproduced below for those internet
+        </p>
+        <p class="para2">@2025 Nostra.com</p>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const navLinks = document.getElementById("nav-links");
+  const searchInput = document.querySelector(".search-bar input");
+  const productCards = document.querySelectorAll(".card");
+  const checkboxes = document.querySelectorAll(".filters input[type='checkbox']");
+
+  // 1. Hamburger Toggle
+  hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+
+  // 2. Product Search
+  searchInput.addEventListener("input", () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    productCards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(searchTerm) ? "block" : "none";
+    });
+  });
+
+  // 3. Filtering Products
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", filterProducts);
+  });
+
+  function filterProducts() {
+    const activeFilters = {
+      Occasion: [],
+      Colors: [],
+      Arrivals: []
+    };
+
+    // Collect checked values
+    document.querySelectorAll(".filters h2").forEach(section => {
+      const category = section.textContent.trim();
+      const inputs = section.nextElementSibling?.parentElement.querySelectorAll("input[type='checkbox']");
+      inputs?.forEach(input => {
+        if (input.checked) {
+          activeFilters[category]?.push(input.parentElement.textContent.trim());
+        }
+      });
+    });
+
+    productCards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const matchesOccasion = matchFilter(text, activeFilters.Occasion);
+      const matchesColor = matchFilter(text, activeFilters.Colors);
+      const matchesArrival = matchFilter(text, activeFilters.Arrivals);
+
+      // Show product only if it matches all selected filters
+      const shouldShow =
+        (activeFilters.Occasion.length === 0 || matchesOccasion) &&
+        (activeFilters.Colors.length === 0 || matchesColor) &&
+        (activeFilters.Arrivals.length === 0 || matchesArrival);
+
+      card.style.display = shouldShow ? "block" : "none";
+    });
+  }
+
+  function matchFilter(text, filters) {
+    return filters.some(filter => text.includes(filter.toLowerCase()));
+  }
+});
+
+    </script>
+</body>
